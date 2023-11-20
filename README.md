@@ -1,0 +1,27 @@
+1. Ensure the backend is running.
+2. Run yarn install and then yarn start
+3. Create an admin user and a content-creator user.
+
+---
+
+// CASE A: Content Creator uses the platform.
+I. Set token for content-creator user type.
+II. create Articles => Articles created for user with id, ex:1354, and type: content-creator
+
+III. Create another content-creator user, and get another token
+IV. create Articles using the new token => Articles created for new userId, ex:2714, and type: content-creator
+V. Edit Contents => User A can edit user's own content only.
+VI. Delete Contents => User A can delete user's own content only.
+
+** User A can view all articles created by himself, having any status.
+** User A can view articles, created by other users, having status of 'published' only
+
+---
+
+// CASE B: Admin uses the platform.
+I. Set token for admin user type.
+II. Update status of all articles
+III. Delete articles
+
+** Admins, can view articles of every user, having any status.
+** Admins, can update and delete any article

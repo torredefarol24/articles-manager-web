@@ -1,29 +1,34 @@
-/** Define actions */
 const SET_TOKEN = "SET_TOKEN";
-const SET_TOKENFOR = "SET_TOKENFOR";
+const SET_TOKEN_FOR = "SET_TOKEN_FOR";
+const SET_USER_ID = "SET_USER_ID";
 
-/** Define initial state */
 const initialState = {
 	token: null,
 	tokenFor: null,
+	userId: null,
 };
 
-/** Create reducer actions & associated payload for action */
-function _seTToken(data: any) {
+function _setToken(data: string) {
 	return {
 		type: SET_TOKEN,
 		payload: data,
 	};
 }
 
-function _seTTokenFor(data: any) {
+function _setTokenFor(data: string) {
 	return {
-		type: SET_TOKENFOR,
+		type: SET_TOKEN_FOR,
 		payload: data,
 	};
 }
 
-/** Create Reducer and handle actions */
+function _setUserId(data: number) {
+	return {
+		type: SET_USER_ID,
+		payload: data,
+	};
+}
+
 export function UserReducer(state = initialState, action: any) {
 	const { type, payload } = action;
 	switch (type) {
@@ -32,21 +37,29 @@ export function UserReducer(state = initialState, action: any) {
 				...state,
 				token: payload,
 			};
-		case SET_TOKENFOR:
+		case SET_TOKEN_FOR:
 			return {
 				...state,
 				tokenFor: payload,
+			};
+		case SET_USER_ID:
+			return {
+				...state,
+				userId: payload,
 			};
 		default:
 			return state;
 	}
 }
 
-/** Create Dispatchers */
-export function setToken(token: any) {
-	return _seTToken(token);
+export function setToken(token: string) {
+	return _setToken(token);
 }
 
-export function setTokenFor(tokenFor: any) {
-	return _seTTokenFor(tokenFor);
+export function setTokenFor(tokenFor: string) {
+	return _setTokenFor(tokenFor);
+}
+
+export function setUserId(userId: number) {
+	return _setUserId(userId);
 }

@@ -1,0 +1,23 @@
+.border-zero {
+	border-radius: 0;
+}
+
+.pd0{
+	padding:0;
+}
+
+.th-w500 {
+	width: 500px;
+}
+
+.th-w50 {
+	width: 50px;
+}
+
+.th-w100 {
+	width: 100px;
+}
+
+.pd20 {
+	padding: 10px 20px;
+}

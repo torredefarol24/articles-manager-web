@@ -1,4 +1,4 @@
-import { Spacer } from "../common/Spacer";
+import { Spacer } from "../common/_Comps";
 
 export function HomeElement() {
 	return (

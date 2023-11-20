@@ -1,31 +1,32 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { USER_APIS } from "../../api/userAPI";
 
 export function CreateUser() {
-	const UserReducer = useSelector(({ User }) => User);
-
 	const [username, setUsername] = useState("");
 	const [type, setType] = useState("");
-	const [isDisabled, setIsDisabled] = useState(UserReducer.token && UserReducer.token.length > 0);
+	const [created, setCreated] = useState(false);
 
 	async function handleUserCreation(e: any) {
 		try {
 			e.preventDefault();
-			const userId = await USER_APIS.create({ username, type });
-			setIsDisabled(userId && userId > 0);
+			const userId = await USER_APIS.createUser({ username, type });
+			setCreated(userId && userId > 0);
 		} catch (e) {
 			console.error(e);
 		}
 	}
 
-	const Content = (
+	return (
 		<div>
-			{isDisabled && <p>User Created</p>}
-			{isDisabled && (
-				<p>
-					<strong>Please set Token now</strong>
-				</p>
+			{created && (
+				<>
+					<p>
+						<strong>User Created</strong>.
+					</p>
+					<p>
+						Please set the <strong>{type.toUpperCase()}</strong> token now
+					</p>
+				</>
 			)}
 
 			<form onSubmit={handleUserCreation}>
@@ -35,12 +36,12 @@ export function CreateUser() {
 					</label>
 					<input
 						type="text"
-						className="form-control"
+						className="form-control border-zero"
 						id="username"
 						onChange={(e) => setUsername(e.target.value)}
 						value={username}
 						placeholder="Type your username here..."
-						disabled={isDisabled}
+						// disabled={isDisabled}
 					/>
 				</div>
 				<div className="mb-3">
@@ -49,20 +50,22 @@ export function CreateUser() {
 					</label>
 					<input
 						type="text"
-						className="form-control"
+						className="form-control border-zero"
 						onChange={(e) => setType(e.target.value)}
 						value={type}
 						id="type"
 						placeholder="admin / content-creator"
-						disabled={isDisabled}
+						// disabled={isDisabled}
 					/>
 				</div>
-				<button type="submit" className="btn btn-success" disabled={isDisabled}>
+				<button
+					type="submit"
+					className="btn btn-success border-zero"
+					// disabled={isDisabled}
+				>
 					Create
 				</button>
 			</form>
 		</div>
 	);
-
-	return Content;
 }

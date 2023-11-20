@@ -5,19 +5,19 @@ export async function getToken(tokenFor: string) {
 	const url = `${ENDPOINTS.USERS.GET_TOKEN}?tokenFor=${tokenFor}`;
 	try {
 		const resp = await axios.get(url);
-		return resp.data.data.token;
+		return {
+			token: resp.data.data.token,
+			userId: resp.data.data.userId,
+		};
 	} catch (err) {
 		console.error(url, err);
 	}
 }
 
-export async function create(data: any) {
-	const url = `${ENDPOINTS.USERS.CREATE}`;
+export async function createUser(data: any) {
+	const url = `${ENDPOINTS.USERS._BASE}`;
 	try {
-		const resp = await axios.post(url, {
-			username: data.username,
-			type: data.type,
-		});
+		const resp = await axios.post(url, data);
 		return resp.data.data.user.userId;
 	} catch (err) {
 		console.error(url, err);
@@ -26,5 +26,5 @@ export async function create(data: any) {
 
 export const USER_APIS = {
 	getToken: (tokenFor: string) => getToken(tokenFor),
-	create,
+	createUser,
 };

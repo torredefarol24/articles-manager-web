@@ -9,7 +9,7 @@ function saveToLocalStorage(state: any) {
 	}
 }
 
-function loadFromLocalStorage() {
+function retrieveFromLocalStorage() {
 	try {
 		const _state = localStorage.getItem(`ArticlesManagerState`);
 		return _state ? JSON.parse(_state) : undefined;
@@ -18,10 +18,10 @@ function loadFromLocalStorage() {
 	}
 }
 
-export const store = createStore(rootReducer, loadFromLocalStorage());
+export const store = createStore(rootReducer, retrieveFromLocalStorage());
+
 store.subscribe(() =>
 	saveToLocalStorage({
 		User: store.getState().User,
-		Article: store.getState().Article,
 	})
 );

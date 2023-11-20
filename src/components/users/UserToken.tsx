@@ -2,61 +2,42 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { USER_APIS } from "../../api/userAPI";
 import { USER_TYPES } from "../../config/enums";
-import { setToken, setTokenFor } from "../../features/UserReducer";
-import { Spacer } from "../common/Spacer";
+import { setToken, setTokenFor, setUserId } from "../../features/UserReducer";
+import { Spacer } from "../common/_Comps";
 import { CreateUser } from "./CreateUser";
+
+function UserToken(props: any) {
+	return (
+		<>
+			<button type="button" className="btn btn-warning border-zero" onClick={props.onClick}>
+				Get <strong>{props.tokenFor.toUpperCase()}</strong> Token Now
+			</button>
+			<Spacer height={30} />
+			<p>{props.token ? props.token.toString().substring(0, 50) + "..." : ""}</p>
+		</>
+	);
+}
 
 export function UserTokenElement() {
 	const [adminToken, setAdminToken] = useState("");
 	const [contentCreatorToken, setContentCreatorToken] = useState("");
 	const dispatch = useDispatch();
 
-	async function getAdminToken() {
+	async function getToken(tokenType: string) {
 		try {
-			const token: any = await USER_APIS.getToken(USER_TYPES.ADMIN);
+			const { token, userId }: any = await USER_APIS.getToken(tokenType);
 			dispatch(setToken(token));
-			dispatch(setTokenFor(USER_TYPES.ADMIN));
-			setAdminToken(token);
+			dispatch(setUserId(userId));
+			dispatch(setTokenFor(tokenType));
+			tokenType === USER_TYPES.ADMIN ? setAdminToken(token) : setContentCreatorToken(token);
 		} catch (err) {
 			console.log(err);
 		}
 	}
 
-	async function getContentCreatorToken() {
-		try {
-			const token: any = await USER_APIS.getToken(USER_TYPES.CONTENT_CREATOR);
-			dispatch(setToken(token));
-			dispatch(setTokenFor(USER_TYPES.CONTENT_CREATOR));
-			setContentCreatorToken(token);
-		} catch (err) {
-			console.log(err);
-		}
-	}
-
-	const AdminComp = (
-		<>
-			<button type="button" className="btn btn-warning" onClick={getAdminToken}>
-				Get Admin Token Now
-			</button>
-			<Spacer height={30} />
-			<strong>{adminToken ? adminToken.toString().substring(0, 50) + "..." : ""}</strong>
-		</>
-	);
-
-	const ContentCreatorComp = (
-		<>
-			<button type="button" className="btn btn-warning" onClick={getContentCreatorToken}>
-				Get Content-Creator Token Now
-			</button>
-			<Spacer height={30} />
-			<strong>
-				{contentCreatorToken ? contentCreatorToken.toString().substring(0, 50) + "..." : ""}
-			</strong>
-		</>
-	);
-
-	const Content = (
+	return (
 		<div className="row">
+
 			<Spacer height={50} />
 			<div className="col-sm-12">
 				<h3>1. Create A User</h3>
@@ -65,15 +46,27 @@ export function UserTokenElement() {
 					<CreateUser />
 				</div>
 			</div>
+
 			<Spacer height={50} />
 			<div className="col-sm-12">
 				<h3>2. Set User Token</h3>
 			</div>
+
 			<Spacer height={30} />
-			<div className="col-sm-6">{AdminComp}</div>
-			<div className="col-sm-6">{ContentCreatorComp}</div>
+			<div className="col-sm-6">
+				<UserToken
+					onClick={() => getToken(USER_TYPES.ADMIN)}
+					tokenFor={USER_TYPES.ADMIN}
+					token={adminToken}
+				/>
+			</div>
+			<div className="col-sm-6">
+				<UserToken
+					onClick={() => getToken(USER_TYPES.CONTENT_CREATOR)}
+					tokenFor={USER_TYPES.CONTENT_CREATOR}
+					token={contentCreatorToken}
+				/>
+			</div>
 		</div>
 	);
-
-	return Content;
 }

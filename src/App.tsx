@@ -4,7 +4,7 @@ import { Routing } from "./components/common/Routing";
 import { Navbar } from "./components/navbar/Navbar";
 import { store } from "./store/store";
 
-function App() {
+export function App() {
 	const routes = Routing();
 	const Main = (
 		<div className="row">
@@ -23,5 +23,3 @@ function App() {
 
 	return <Provider store={store}>{Main}</Provider>;
 }
-
-export default App;
